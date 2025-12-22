@@ -1,0 +1,21 @@
+# Requirements for Laser-APD Delay Analysis System v3.0
+# Enhanced version with automatic delay calculation and statistical analysis
+
+# Core dependencies
+numpy>=1.24.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+gradio>=4.0.0
+
+# Scientific computing (for cross-correlation and statistics)
+scipy>=1.10.0
+
+# Excel export
+openpyxl>=3.1.0
+
+# VISA communication (should already be installed)
+pyvisa>=1.13.0
+pyvisa-py>=0.7.0
+
+# Optional but recommended
+# pillow>=10.0.0  # For image processing if needed
