@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(Remove-Item -Recurse -Force .git)",
-      "Bash(git init:*)",
-      "Bash(git add:*)"
-    ]
-  }
-}
