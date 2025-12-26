@@ -1,6 +1,6 @@
-# 📸 Continuous Trigger Capture System
+# Continuous Trigger Capture System
 
-## Automated Screenshot & Waveform Data Capture for Keysight Oscilloscope
+## Automated Screenshot & Waveform Data Acquisition for Keysight Oscilloscope
 
 **Developer**: Anirudh Iyengar
 **Organization**: Digantara Research and Technologies Pvt. Ltd.
@@ -9,299 +9,141 @@
 
 ---
 
-## 🎯 What This Tool Does
+## Overview
 
-This is a simple, automated system that captures oscilloscope screenshots and waveform data **every time a trigger event occurs**. Think of it like a camera that automatically takes a photo of your oscilloscope screen whenever it detects a signal.
+This system automates the process of capturing oscilloscope screenshots and waveform data on trigger events. It continuously monitors for trigger conditions, captures the display and raw data, and saves everything with proper timestamps.
 
-### In Simple Terms:
-
-✅ **Waits for a signal** (trigger event)
-✅ **Captures the screen** as a PNG image
-✅ **Saves the waveform data** as CSV files
-✅ **Repeats** for as many captures as you want
-✅ **Shows progress** in real-time
-✅ **Organizes all files** neatly in folders
-
-**Perfect for**: Collecting multiple signal measurements automatically without sitting at the oscilloscope clicking "Save" repeatedly!
+**Key Features:**
+- Trigger-based automated capture
+- PNG screenshot generation
+- CSV waveform data export
+- Multi-channel support
+- Real-time progress monitoring
+- Web-based control interface
+- Configurable capture parameters
 
 ---
 
-## 🚀 Quick Start Guide (3 Simple Steps)
+## Quick Start
 
-### Step 1: Install Required Software
+### Installation
 
-Open a command prompt and type:
+Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-This installs all the needed libraries (numpy, pandas, gradio, etc.)
+### Running the Application
 
-### Step 2: Launch the Application
+Launch the web interface:
 
 ```bash
 python continuous_trigger_capture.py
 ```
 
-The program will start and automatically open in your web browser!
+The application will start a local web server and open in your default browser.
 
-### Step 3: Use the Web Interface
+### Basic Workflow
 
-1. **Connect to your oscilloscope** (Connection tab)
-2. **Set up your signal** (Channel Configuration tab)
-3. **Configure trigger** (Timebase & Trigger tab)
-4. **Start capturing** (Capture Setup → Capture Control)
-
-That's it! The system does the rest automatically.
-
----
-
-## 📋 Complete Step-by-Step Instructions
-
-### STEP 1: Connect to Your Oscilloscope
-
-1. **Find your oscilloscope's address**:
-   - Look at the oscilloscope screen
-   - Press **Utility** button → **I/O** → **LAN Configuration**
-   - Note down the VISA address (looks like: `USB0::0x0957::0x1780::MY65220169::INSTR`)
-
-2. **In the web interface**:
-   - Go to **"Connection"** tab
-   - Paste the VISA address in the textbox
-   - Click **"Connect"** button
-   - Wait for "Connected to Keysight..." message
-
-3. **Test the connection**:
-   - Click **"Test"** button
-   - Should say "Connection test: PASSED"
-
-✅ **You're now connected!**
+1. Connect to the oscilloscope (Connection tab)
+2. Configure channels (Channel Configuration tab)
+3. Set trigger parameters (Timebase & Trigger tab)
+4. Configure capture settings (Capture Setup tab)
+5. Start capture (Capture Control tab)
+6. View results (Results tab)
 
 ---
 
-### STEP 2: Configure Your Channels
+## Configuration
 
-1. **Go to "Channel Configuration" tab**
+### 1. Oscilloscope Connection
 
-2. **Select which channels to use**:
-   - Check ☑ **Ch1** if using Channel 1
-   - Check ☑ **Ch2** if using Channel 2
-   - Check ☑ **Ch3** if using Channel 3
-   - Check ☑ **Ch4** if using Channel 4
+Obtain the VISA address from your oscilloscope:
+- Navigate to **Utility** → **I/O** → **LAN Configuration**
+- Note the VISA address (format: `USB0::0x0957::0x1780::MY65220169::INSTR`)
 
-3. **Set voltage scale** (V/div):
-   - Example: `1.0` means 1 volt per division
-   - Adjust so your signal fills about 50-80% of screen height
+In the web interface:
+- Go to the Connection tab
+- Enter the VISA address
+- Click Connect
+- Verify connection with the Test button
 
-4. **Set other parameters**:
-   - **Offset**: Usually `0.0` (centers the signal)
-   - **Coupling**: Choose `DC` (most common) or `AC`
-   - **Probe**: Select `10x` if using 10:1 probe, `1x` otherwise
+### 2. Channel Configuration
 
-5. **Click "Configure Channels"**
+Configure the channels you want to use:
+- Select active channels (Ch1-Ch4)
+- Set voltage scale (V/div)
+- Configure offset, coupling (DC/AC), and probe attenuation
+- Apply the configuration
 
-6. **Optional - Auto Setup**:
-   - Click **"Autoscale"** to let the scope automatically adjust settings
-   - Wait 3 seconds for it to finish
+Optional: Use Autoscale for automatic channel setup
 
-✅ **Your channels are now set up!**
+### 3. Timebase and Trigger Settings
 
----
+**Trigger Configuration:**
+- Source: Select trigger channel
+- Level: Set voltage threshold
+- Slope: Rising, Falling, or Either
 
-### STEP 3: Set Up Timebase & Trigger
+**Timebase:**
+- Set time/division to display 2-3 signal cycles
 
-1. **Go to "Timebase & Trigger" tab**
+### 4. Capture Parameters
 
-#### Configure Trigger:
+**Acquisition Settings:**
+- Number of captures (1-10,000)
+- Interval between captures (seconds)
+- Trigger timeout (seconds)
 
-**What is a trigger?** It tells the scope when to capture a signal (e.g., when voltage rises above 1V)
+**Data Selection:**
+- Choose channels to save
+- Enable/disable screenshot capture
+- Enable/disable waveform data export
+- Optional: Enable combined multi-channel CSV
 
-- **Trigger Source**: Choose which channel to trigger on (usually `CH1`)
-- **Trigger Level**: Voltage threshold (e.g., `0.0` for zero crossing, `1.5` for 1.5V)
-- **Trigger Slope**:
-  - `Rising` = trigger when voltage goes up ↗
-  - `Falling` = trigger when voltage goes down ↘
-  - `Either` = trigger on both
-- Click **"Apply Trigger"**
+**File Settings:**
+- Base filename prefix
+- Save directory path
 
-#### Set Timebase:
+### 5. Running a Capture Session
 
-**What is timebase?** How much time each horizontal division represents
-
-- **Time/div**: Select from dropdown (e.g., `1 ms` = 1 millisecond per division)
-- Adjust so you see 2-3 complete signal cycles on screen
-- Click **"Apply Timebase"**
-
-✅ **Trigger and timebase configured!**
-
----
-
-### STEP 4: Configure Capture Settings
-
-1. **Go to "Capture Setup" tab**
-
-#### Capture Parameters:
-
-- **Number of Captures**: How many screenshots/waveforms to collect
-  - Example: `50` = capture 50 trigger events
-  - Range: 1 to 10,000
-
-- **Interval Between Captures**: Time to wait between each capture (in seconds)
-  - Example: `1.0` = wait 1 second between captures
-  - Use `0` for back-to-back captures (as fast as possible)
-  - Use `5.0` for slower signals (wait 5 seconds between)
-
-- **Trigger Timeout**: Maximum time to wait for a trigger (in seconds)
-  - Example: `10.0` = wait up to 10 seconds for signal
-  - Increase if your signal is slow/intermittent
-  - Decrease for faster operation
-
-#### Channel Selection:
-
-Check which channels to save data from:
-- ☑ **Channel 1**
-- ☑ **Channel 2**
-- ☐ **Channel 3**
-- ☐ **Channel 4**
-
-#### Save Options:
-
-Choose what to save:
-
-- ☑ **Capture Screenshots**: Saves PNG image of oscilloscope screen
-  - Recommended: YES (to see what the signal looked like)
-
-- ☑ **Save Waveform Data**: Saves CSV files with time/voltage data
-  - Recommended: YES (for later analysis in Excel/MATLAB)
-
-- ☐ **Save Combined Multi-Channel CSV**: Saves all channels in one CSV file
-  - Optional: Check if you want all channels together
-
-#### File Settings:
-
-- **Base Filename**: Name prefix for all files
-  - Example: `trigger_capture` → files named `trigger_capture_0001.png`, etc.
-
-- **Save Directory**: Where to save files
-  - Default: `trigger_captures` folder in current directory
-  - Can change to any folder path: `C:\Users\YourName\Documents\MyData`
-
-#### Time Estimate:
-
-The system shows estimated total time based on your settings.
-
-✅ **Capture configured!**
+1. Navigate to Capture Control tab
+2. Click Start Capture
+3. Monitor progress using Refresh or enable Auto Refresh
+4. Stop early if needed using the Stop button
+5. Review results in the Results tab
 
 ---
 
-### STEP 5: Start Capturing!
+## Output Files
 
-1. **Go to "Capture Control" tab**
+### File Naming Convention
 
-2. **Click the big "Start Capture" button**
-
-3. **Monitor progress**:
-   - Click **"Refresh"** to update status
-   - OR check **"Auto Refresh (2s)"** for automatic updates every 2 seconds
-
-4. **Watch the status display**:
-   ```
-   RUNNING
-   -----------------------------------------
-   Progress: 15/50 (30.0%)
-   [██████░░░░░░░░░░░░░░]
-   Successful: 14
-   Failed: 1
-   Total Files: 42
-   ```
-
-5. **To stop early**: Click **"Stop"** button
-
-6. **Wait for completion**: Status will show "IDLE" when done
-
-✅ **Capturing in progress!**
-
----
-
-### STEP 6: View Your Results
-
-1. **Go to "Results" tab**
-
-2. **Click "Show Files"** to see list of captured files:
-   ```
-   CAPTURED FILES
-   -----------------------------------------
-
-   Screenshots (50):
-     • trigger_capture_screenshot_0001_20250122_143052_123.png
-     • trigger_capture_screenshot_0002_20250122_143053_456.png
-     ...
-
-   Waveforms (100):
-     • trigger_capture_CH1_0001_20250122_143052_123.csv
-     • trigger_capture_CH2_0001_20250122_143052_123.csv
-     ...
-   ```
-
-3. **Click "Generate Summary"** for detailed statistics:
-   ```
-   CAPTURE SESSION SUMMARY
-   -----------------------------------------
-
-   STATISTICS:
-     • Total Captures: 50
-     • Successful: 48 (96.0%)
-     • Failed: 2
-     • Success Rate: 96.0%
-
-   TIMING:
-     • Total Duration: 62.3 seconds
-     • Avg Time/Capture: 1.30 seconds
-
-   FILES SAVED:
-     • Screenshots: 48
-     • Waveform Files: 96
-     • Total Files: 144
-   ```
-
-4. **Click "Save Report"** to export summary as JSON file
-
-5. **Find your files**:
-   - Open the **Save Directory** you specified
-   - All PNG and CSV files are there, ready to use!
-
-✅ **Results saved and ready!**
-
----
-
-## 📁 Understanding Your Files
-
-After a capture session, you'll have these files:
-
-### Screenshot Files (PNG):
+**Screenshots:**
 ```
-trigger_capture_screenshot_0001_20250122_143052_123.png
-                          ↑       ↑        ↑      ↑
-                       index    date     time   ms
-```
-- **Index**: Capture number (0001, 0002, 0003...)
-- **Date**: YYYYMMDD format
-- **Time**: HHMMSS format
-- **Milliseconds**: For precise timing
-
-**What's inside?** A picture of the oscilloscope screen, exactly as it appeared when the trigger fired.
-
-### Waveform CSV Files:
-```
-trigger_capture_CH1_0001_20250122_143052_123.csv
+<prefix>_screenshot_<index>_<YYYYMMDD>_<HHMMSS>_<ms>.png
 ```
 
-**What's inside?** Numerical data with columns:
-- `Time (s)`: Time values (in seconds)
-- `Voltage (V)`: Voltage values (in volts)
+**Waveform Data:**
+```
+<prefix>_CH<n>_<index>_<YYYYMMDD>_<HHMMSS>_<ms>.csv
+```
 
-**Example CSV content:**
+**Combined Multi-Channel:**
+```
+<prefix>_MULTI_<index>_<YYYYMMDD>_<HHMMSS>_<ms>.csv
+```
+
+### File Formats
+
+**PNG Screenshots:**
+- Oscilloscope display capture at trigger event
+
+**CSV Waveform Files:**
+- Header: Channel info, timestamp, sample rate, point count
+- Data columns: Time (s), Voltage (V)
+- Example:
 ```csv
 # Channel: 1
 # Capture Index: 0
@@ -312,455 +154,268 @@ trigger_capture_CH1_0001_20250122_143052_123.csv
 Time (s),Voltage (V)
 -0.000001000,0.0234
 -0.000000998,0.0245
--0.000000996,0.0251
 ...
 ```
 
-**How to use:**
-- Open in **Excel**: Import as CSV file
-- Open in **MATLAB**: `data = readtable('filename.csv')`
-- Open in **Python**: `df = pd.read_csv('filename.csv', comment='#')`
+**Combined CSV Format:**
+- All channels time-aligned in single file
+- Columns: Time (s), CH1 (V), CH2 (V), etc.
 
-### Combined CSV Files (if enabled):
-```
-trigger_capture_MULTI_0001_20250122_143052_123.csv
-```
+### Data Analysis
 
-**What's inside?** All channels in one file:
-```csv
-Time (s),CH1 (V),CH2 (V)
--0.000001000,0.0234,0.1456
--0.000000998,0.0245,0.1467
-...
-```
+Import captured data using:
+- **Excel**: Import CSV with comma delimiter
+- **MATLAB**: `data = readtable('filename.csv')`
+- **Python**: `df = pd.read_csv('filename.csv', comment='#')`
 
 ---
 
-## 💡 Tips for Best Results
+## Best Practices
 
-### ✅ DO:
+### Recommended Workflow
 
-1. **Test your trigger first**:
-   - On the oscilloscope, make sure the trigger is working
-   - Signal should be stable, not flickering
-   - See a steady waveform on screen
+1. Verify trigger stability on the oscilloscope before starting automated capture
+2. Set trigger timeout with appropriate margin (typically 2-10x signal period)
+3. Start with a test run (5-10 captures) to verify configuration
+4. Check initial output files for correctness
+5. Monitor capture progress using Auto Refresh
+6. Address failures promptly if success rate drops below 95%
 
-2. **Use appropriate timeout**:
-   - If signal repeats every 0.1s → use 1s timeout (10× safety margin)
-   - If signal is slow (every 5s) → use 20s timeout
+### Common Pitfalls
 
-3. **Start with a small test**:
-   - Try 5 captures first to verify everything works
-   - Then increase to 50 or 100 for real data collection
-
-4. **Check the first few files**:
-   - After starting, click "Show Files" after 30 seconds
-   - Open one PNG to verify it looks correct
-   - Open one CSV to verify data looks reasonable
-
-5. **Monitor the capture**:
-   - Enable "Auto Refresh" in Capture Control tab
-   - Watch for failures (should be 0 or very few)
-   - If many failures, stop and fix trigger settings
-
-### ❌ DON'T:
-
-1. **Don't use interval = 0 for slow signals**:
-   - System will timeout repeatedly if signal doesn't come fast enough
-   - Use interval ≥ your signal period
-
-2. **Don't start huge captures without testing**:
-   - Test with 5 captures first
-   - Verify files are created and look correct
-   - Then scale up to hundreds/thousands
-
-3. **Don't ignore failures**:
-   - If "Failed: 10" out of 50, something is wrong
-   - Usually means: bad trigger, wrong timeout, or signal issues
-
-4. **Don't close the browser window during capture**:
-   - Capture runs in background, but you won't see status
-   - Keep the window open to monitor progress
+- Setting interval too short for slow signals causes repeated timeouts
+- Large capture sessions without preliminary testing
+- Closing browser during active capture prevents status monitoring
+- Insufficient trigger timeout for intermittent signals
 
 ---
 
-## 🔍 Troubleshooting Common Issues
+## Troubleshooting
 
-### Problem: "Connection test: FAILED"
+### Connection Failures
 
-**Causes:**
-- Wrong VISA address
-- Oscilloscope is off
-- USB cable disconnected
-- VISA drivers not installed
+**Symptoms:** Connection test fails or oscilloscope not detected
 
 **Solutions:**
-1. Check oscilloscope is powered on
-2. Verify USB cable is connected
-3. Install NI-VISA drivers: https://www.ni.com/en-us/support/downloads/drivers/download.ni-visa.html
-4. Try different VISA address format
+- Verify VISA address is correct
+- Confirm oscilloscope is powered on and USB/LAN is connected
+- Install NI-VISA drivers if not present
+- Check cable connections
 
----
+### Repeated Trigger Timeouts
 
-### Problem: "Trigger timeout" on every capture
-
-**Causes:**
-- No signal on trigger channel
-- Trigger level wrong
-- Trigger timeout too short
-- Signal not repeating
-
-**Solutions:**
-1. Look at oscilloscope screen - do you see a stable waveform?
-2. If no signal: check cables, signal source
-3. If signal visible but not triggering:
-   - Adjust trigger level (try 50% of signal amplitude)
-   - Change trigger slope (try "Either")
-4. If signal is slow: increase Trigger Timeout to 30 or 60 seconds
-
----
-
-### Problem: Files are created but are empty or corrupted
+**Symptoms:** All or most captures timing out
 
 **Causes:**
-- Disk full
-- No write permissions
-- Path doesn't exist
+- No signal present on trigger channel
+- Incorrect trigger level or slope
+- Timeout value too short for signal period
 
 **Solutions:**
-1. Check disk space (need ~10 MB per 100 captures)
-2. Verify Save Directory path is correct
-3. Try saving to Desktop first: `C:\Users\YourName\Desktop\test_data`
-4. Make sure folder path exists (system creates it, but parent must exist)
+- Verify signal is visible on oscilloscope display
+- Adjust trigger level to ~50% of signal amplitude
+- Increase trigger timeout for slow or intermittent signals
+- Change trigger slope to "Either" if unsure of edge direction
 
----
+### File I/O Issues
 
-### Problem: Capture is very slow
-
-**Causes:**
-- Large interval between captures
-- Slow network (if using LAN connection)
-- Many channels enabled
-- Large waveform point count (62,500 points per channel)
+**Symptoms:** Empty or corrupted files, write errors
 
 **Solutions:**
-1. Reduce Interval Between Captures
-2. Use USB connection instead of LAN (much faster)
-3. Disable unused channels
-4. This is normal for high-resolution captures (1-2 seconds per capture is typical)
+- Verify sufficient disk space (~10 MB per 100 captures)
+- Check write permissions for save directory
+- Ensure parent directory exists
+- Test with a simple path (e.g., Desktop)
 
----
+### Performance Issues
 
-### Problem: Screenshot is blank/black
+**Expected Performance:** 1-2 seconds per capture is typical
 
-**Causes:**
-- Scope display is off
-- Wrong display mode
+**Optimization:**
+- Use USB connection instead of LAN
+- Disable unused channels
+- Reduce interval between captures
+- Note: High-resolution waveforms (62,500 points) inherently take time to transfer
 
-**Solutions:**
-1. Press the oscilloscope's **Display** button
-2. Make sure screen is on and showing waveforms
-3. Try clicking "Autoscale" first
+### Display Capture Problems
 
----
-
-### Problem: CSV files can't be opened
-
-**Causes:**
-- File still being written (capture in progress)
-- Associated program doesn't support CSV
+**Symptoms:** Blank or black screenshots
 
 **Solutions:**
-1. Wait for capture to complete before opening files
-2. Right-click file → "Open with" → Excel or Notepad
-3. Files have header comments starting with `#` - some programs may need these skipped
+- Verify oscilloscope display is active
+- Run Autoscale to ensure waveforms are visible
+- Check display settings on oscilloscope
 
 ---
 
-## 🎓 Understanding the System
+## System Architecture
 
-### How It Works (Simple Explanation):
+### Capture Loop Operation
 
-1. **SINGLE Mode**: System puts oscilloscope in "SINGLE" mode
-   - This means: capture ONE trigger event, then stop
+1. Set oscilloscope to SINGLE trigger mode
+2. Wait for trigger event (up to timeout duration)
+3. On trigger:
+   - Capture display as PNG
+   - Download waveform data
+   - Save files with timestamp
+4. Wait for specified interval
+5. Repeat until capture count reached
 
-2. **Wait for Trigger**: System waits up to `Trigger Timeout` seconds
-   - Watching for your signal to cross the trigger level
+### Timing Characteristics
 
-3. **Trigger Fires**: When signal crosses threshold:
-   - Oscilloscope freezes the display
-   - System captures the screen as PNG
-   - System downloads waveform data as CSV
+**Total Duration ≈ N × (Interval + Capture_Time)**
 
-4. **Save Files**: All files saved with timestamp
+Where:
+- N = Number of captures
+- Interval = User-defined wait time
+- Capture_Time ≈ 1-2 seconds (data transfer overhead)
 
-5. **Wait**: System waits `Interval Between Captures` seconds
+Example: 50 captures with 1.0s interval ≈ 125 seconds total
 
-6. **Repeat**: Go back to step 1, until `Number of Captures` reached
-
-### Timing Explanation:
-
-**Total Time ≈ (Number of Captures) × (Interval + Capture Time)**
-
-Example:
-- Number of Captures = 50
-- Interval = 1.0 second
-- Capture Time ≈ 1-2 seconds (screenshot + data download)
-- **Total Time ≈ 50 × (1.0 + 1.5) = 125 seconds ≈ 2 minutes**
-
-The "Interval Between Captures" is the **target total loop time**, not just the wait time. The system adjusts the actual wait to account for capture time.
+Note: Interval represents target loop time. Actual wait time is adjusted to compensate for capture overhead.
 
 ---
 
-## 📊 Example Use Cases
+## Application Examples
 
-### Use Case 1: Characterizing a Pulsed Laser
+### Pulsed Signal Characterization
 
-**Setup:**
-- Connect laser photodiode to CH1
-- Laser fires every 2 seconds
-- Want 100 pulse waveforms
+**Scenario:** Capturing laser photodiode pulses (2 Hz repetition rate)
 
 **Configuration:**
-```
-Number of Captures: 100
-Interval: 2.0 seconds
-Trigger Timeout: 5.0 seconds (2× safety)
-Channel: CH1
-Trigger Source: CH1
-Trigger Level: 0.5 V (50% of pulse height)
-Trigger Slope: Rising
-Capture Screenshots: Yes
-Save Waveforms: Yes
-```
+- Captures: 100
+- Interval: 2.0s
+- Timeout: 5.0s
+- Trigger: CH1, Rising edge, 0.5V threshold
 
-**Result:** 100 PNG screenshots + 100 CSV files of laser pulses
+**Output:** 100 synchronized screenshots and waveform files
 
----
+### Transient Event Monitoring
 
-### Use Case 2: Capturing Transient Events
-
-**Setup:**
-- Monitoring power supply voltage on CH2
-- Want to capture voltage glitches whenever they occur
-- Glitches happen randomly every 10-30 seconds
+**Scenario:** Power supply glitch detection
 
 **Configuration:**
-```
-Number of Captures: 50
-Interval: 0.0 seconds (capture as fast as they come)
-Trigger Timeout: 60.0 seconds (glitches are rare)
-Channel: CH2
-Trigger Source: CH2
-Trigger Level: 5.5 V (above normal 5V level)
-Trigger Slope: Rising
-Capture Screenshots: Yes
-Save Waveforms: Yes
-```
+- Captures: 50
+- Interval: 0s (continuous)
+- Timeout: 60s
+- Trigger: CH2, Rising edge, 5.5V threshold (above nominal 5V)
 
-**Result:** Every time voltage exceeds 5.5V, capture it automatically
+**Use:** Automatic capture of infrequent voltage transients
 
----
+### Multi-Channel Analysis
 
-### Use Case 3: Comparing Two Signals Over Time
-
-**Setup:**
-- Input signal on CH1
-- Output signal on CH2
-- Want to verify phase relationship stays constant
+**Scenario:** Input-output phase relationship verification
 
 **Configuration:**
-```
-Number of Captures: 200
-Interval: 5.0 seconds
-Trigger Timeout: 10.0 seconds
-Channels: CH1, CH2
-Trigger Source: CH1
-Save Combined CSV: Yes
-```
+- Captures: 200
+- Interval: 5.0s
+- Channels: CH1, CH2
+- Trigger: CH1
+- Combined CSV: Enabled
 
-**Result:** 200 combined CSV files with both channels for offline analysis
+**Output:** Time-aligned multi-channel data for correlation analysis
 
 ---
 
-## 🔧 Advanced Settings Explained
+## Parameter Reference
 
-### Trigger Timeout:
+### Trigger Timeout
 
-**What it does:** Maximum time to wait for a trigger before giving up
+Maximum wait time for trigger event before aborting capture.
 
-**When to increase:**
-- Slow/intermittent signals
-- Signal period > 1 second
-- Capturing rare events
+**Recommendations:**
+- Fast signals (<100ms period): 1-2s
+- Moderate signals (0.1-1s period): 5-10s
+- Slow/intermittent signals: 30-120s
+- Rule of thumb: Set to 2-10x expected signal period
 
-**When to decrease:**
-- Fast signals (< 100 ms period)
-- Want faster error detection
-- Signal should always be present
+### Interval Between Captures
 
----
+Target time between consecutive capture starts.
 
-### Interval Between Captures:
+**Behavior:**
+- Actual wait = Interval - Capture_Time
+- When Interval = 0: Back-to-back captures at maximum hardware speed (~0.5-1 Hz)
+- For periodic signals: Match or exceed signal period
 
-**What it does:** Target time from start of one capture to start of next
+### Combined Multi-Channel CSV
 
-**Formula:** `Actual wait = Interval - (time to capture + time to save)`
+Saves all channels in single time-aligned file.
 
-**Special case: Interval = 0**
-- No extra wait
-- Captures back-to-back as fast as possible
-- Actual rate limited by oscilloscope speed (~1-2 captures/second)
+**Use when:**
+- Performing cross-channel analysis
+- Need guaranteed time alignment
+- Prefer simplified file management
 
----
-
-### Save Combined Multi-Channel CSV:
-
-**When to use:**
-- Want all channels time-aligned in one file
-- Easier for plotting (one file instead of multiple)
-- Doing correlation analysis between channels
-
-**When NOT to use:**
-- Only using one channel (no benefit)
-- Want separate files for each channel (easier to manage)
-- File size concerns (combined files are larger)
+**Avoid when:**
+- Single channel acquisition
+- Concerned about file size
+- Prefer modular per-channel files
 
 ---
 
-## 📚 File Organization Best Practices
+## Data Management
 
-### Recommended Folder Structure:
+### Recommended Directory Structure
 
 ```
-C:\Users\YourName\Documents\OscilloscopeData\
-├── 2025-01-22_Laser_Test\
-│   ├── trigger_capture_screenshot_0001.png
-│   ├── trigger_capture_screenshot_0002.png
-│   ├── trigger_capture_CH1_0001.csv
-│   ├── trigger_capture_CH1_0002.csv
-│   └── capture_summary_20250122_143052.json
-│
-├── 2025-01-23_Power_Supply_Test\
-│   └── ...
-│
-└── 2025-01-24_Signal_Analysis\
-    └── ...
+OscilloscopeData/
+├── 2025-01-22_LaserTest/
+│   ├── trigger_capture_screenshot_*.png
+│   ├── trigger_capture_CH1_*.csv
+│   └── capture_summary.json
+├── 2025-01-23_PowerSupplyTest/
+└── 2025-01-24_SignalAnalysis/
 ```
 
-**Tips:**
-- Create a new folder for each test/experiment
-- Use descriptive names with dates
-- Keep related captures together
-- Back up important data regularly
+Use dated folders with descriptive names for each test session.
+
+### Configuration Presets
+
+| Application | Captures | Interval | Timeout |
+|-------------|----------|----------|---------|
+| Fast repetitive signal | 50-100 | 0.5s | 2s |
+| 1 Hz periodic signal | 100-200 | 1.0s | 5s |
+| Rare transient events | 20-50 | 0s | 60-120s |
+| Long-term monitoring | 500-1000 | 60s | 120s |
+| Configuration test | 5-10 | 1s | 10s |
 
 ---
 
-## 🎯 Quick Reference Card
+## Pre-Capture Checklist
 
-### Typical Settings for Common Scenarios:
-
-| Scenario | Captures | Interval | Timeout | Notes |
-|----------|----------|----------|---------|-------|
-| **Fast repetitive signal** | 50 | 0.5 s | 2 s | Quick collection |
-| **Slow signal (1 Hz)** | 100 | 1.0 s | 5 s | Match signal rate |
-| **Rare events** | 50 | 0 s | 60 s | Wait patiently |
-| **Long-term monitoring** | 1000 | 60 s | 120 s | Every minute for hours |
-| **Quick test** | 5 | 1 s | 10 s | Verify setup |
-
----
-
-## ✅ Pre-Flight Checklist
-
-Before starting a capture session:
-
-- [ ] Oscilloscope is on and connected
-- [ ] Signal is visible on screen
-- [ ] Trigger is working (stable waveform, not flickering)
-- [ ] Channels are enabled and configured
-- [ ] Trigger level is appropriate (usually 50% of signal)
-- [ ] Timebase shows 2-3 signal cycles
-- [ ] Save Directory path is correct
-- [ ] Tested with 5 captures first
-- [ ] Checked that files are being created
-- [ ] Verified first screenshot looks correct
-
-**If all checked → Ready to start full capture!**
+- [ ] Oscilloscope powered and connected
+- [ ] Signal visible on display
+- [ ] Stable trigger (non-flickering waveform)
+- [ ] Channels configured correctly
+- [ ] Trigger level set appropriately
+- [ ] Timebase displays 2-3 signal cycles
+- [ ] Save directory path verified
+- [ ] Initial test run completed
+- [ ] Sample files verified
 
 ---
 
-## 🆘 Getting Help
+## Error Reference
 
-### Still Having Problems?
-
-1. **Check the logs**: Look at the console window for error messages
-2. **Test manually**: Try saving one screenshot manually on the scope
-3. **Simplify**: Try 1 channel, 5 captures, basic settings
-4. **Verify connection**: Use oscilloscope's built-in web server to confirm network works
-
-### Common Error Messages:
-
-| Error | Meaning | Fix |
-|-------|---------|-----|
-| "Not connected" | No oscilloscope connection | Go to Connection tab, click Connect |
-| "No channels selected" | All channel checkboxes unchecked | Check at least one channel |
-| "Configuration error" | Invalid settings | Check all numbers are positive |
-| "Trigger timeout" | No signal detected | Check signal, adjust trigger level |
+| Error Message | Cause | Resolution |
+|---------------|-------|------------|
+| "Not connected" | No oscilloscope connection | Verify connection in Connection tab |
+| "No channels selected" | No channels enabled for data capture | Enable at least one channel |
+| "Configuration error" | Invalid parameter values | Check all parameters are valid |
+| "Trigger timeout" | No trigger event detected | Verify signal and trigger settings |
 
 ---
 
-## 📖 Summary
+## Technical Support
 
-### What You've Learned:
-
-✅ How to connect to the oscilloscope
-✅ How to configure channels and trigger
-✅ How to set up and start captures
-✅ How to monitor progress
-✅ How to find and use your captured files
-✅ How to troubleshoot common issues
-
-### Key Takeaways:
-
-1. **Test first** - Always start with 5 captures to verify setup
-2. **Monitor progress** - Use Auto Refresh to watch status
-3. **Check files early** - Open first PNG/CSV to verify correctness
-4. **Adjust as needed** - If failures occur, stop and fix settings
-5. **Save your data** - Organize in dated folders with good names
-
----
-
-## 🎉 You're Ready!
-
-This tool will save you hours of manual work by automating repetitive oscilloscope captures.
-
-**Start small, verify it works, then scale up to hundreds or thousands of automated captures!**
-
----
-
-## 📞 Support
-
-**Developed by**: Anirudh Iyengar
+**Developer**: Anirudh Iyengar
 **Organization**: Digantara Research and Technologies Pvt. Ltd.
 
-For technical support, contact your organization's instrumentation team.
+For assistance, contact the instrumentation team.
 
 ---
 
-## 🚀 Quick Start Reminder
+## License
 
-```bash
-# 1. Install
-pip install -r requirements.txt
-
-# 2. Launch
-python continuous_trigger_capture.py
-
-# 3. In web browser:
-#    - Connect (Connection tab)
-#    - Configure (Channel & Trigger tabs)
-#    - Capture (Capture Setup → Control)
-#    - Results (Results tab)
-```
-
-**Good luck with your measurements! 📊🔬**
+Internal use - Digantara Research and Technologies Pvt. Ltd.
